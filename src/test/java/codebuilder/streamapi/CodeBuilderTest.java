@@ -29,6 +29,24 @@ public class CodeBuilderTest {
     @Autowired
     private OrderRepo orderRepo;
 
+    /**
+     * Exercises 1 : Obtain a list of products belongs to category “Books” with price > 100
+     * Exercises 1 : Obtain a list of order with products belong to category “Baby”
+     * Exercises 1 :
+     * Exercises 1 : Obtain a list of products ordered by customer of tier 2 between 01-Feb-2021 and 01-Apr-2021
+     * Exercises 1 : Get the cheapest products of “Books” category
+     * Exercises 1 :
+     * Exercises 1 : Calculate order average payment placed on 14-Mar-2021
+     * Exercises 1 : Get the 3 most recent placed order
+     * Exercises 1 :
+     * Exercises 1 : Get a list of orders which were ordered on 15-Mar-2021, log the order records to the console and " +
+     * "then return its product list
+     * Exercises 1 :
+     * Exercises 1 : Obtain a list of product with category = “Toys” and then apply 10% discount
+     * Exercises 1 : Calculate total lump sum of all orders placed in Feb 2021
+     * Exercises 1 :
+     */
+
 
     @Test
     @DisplayName("Obtain a list of products belongs to category “Books” with price > 100")
@@ -103,7 +121,30 @@ public class CodeBuilderTest {
                 .collect(Collectors.toList());
     }
 
+    @Test
+    @DisplayName("Calculate total lump sum of all orders placed in Feb 2021")
+    public void exercises8() {
+        Double result = orderRepo.findAll().stream()
+                .filter(order -> order.getOrderDate().compareTo(LocalDate.of(2021, 2, 1)) >= 0 &&
+                        order.getOrderDate().compareTo(LocalDate.of(2021, 3, 1)) < 0)
+                .flatMap(order -> order.getProducts().stream())
+                .mapToDouble(product -> product.getPrice())
+                .sum();
+        System.out.println(result);
+    }
 
+    @Test
+    @DisplayName("Calculate order average payment placed on 14-Mar-2021")
+    public void exercises9() {
+        Double result = orderRepo.findAll().stream()
+                .filter(order -> order.getOrderDate().isEqual(LocalDate.of(2021, 3, 15)))
+                .flatMap(order -> order.getProducts().stream())
+                .mapToDouble(Product::getPrice)
+                .average()
+                .getAsDouble();
+        System.out.println(result);
+
+    }
 
 
 }
